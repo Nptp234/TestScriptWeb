@@ -13,78 +13,147 @@ using TestScriptWeb.Data;
 
 namespace TestScriptWeb
 {
-    class DKTest
+    class DKTest : ASetUp
     {
-        private IWebDriver driver;
-        private WebDriverWait wait;
-        private List<User> lsKH;
-        private string url = "https://localhost:44324/";
-
-        //private static object[] DataLoginKH;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            lsKH = new List<User>();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            //DataLoginKH = TestLoginData.GetDataLoginKH(worksheet);
-        }
-
         [Test]
         [TestCaseSource(typeof(TestLogupKHData), nameof(TestLogupKHData.dataKH))]
         public void TestLogup(User kh)
         {
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(3000);
 
-            IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("loginbtn")));
-            loginButton.Click();
-            Thread.Sleep(2000);
-
-            IWebElement logupLink = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("a[href='/Home/RegisterPage ']")));
-            logupLink.Click();
-            Thread.Sleep(2000);
-
-            IWebElement name = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("Username")));
-            name.SendKeys(kh.Username);
-            Thread.Sleep(1000);
-
-            IWebElement pass = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("Password")));
-            pass.SendKeys(kh.Password);
-            Thread.Sleep(1000);
-
-            IWebElement gmail = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("Email")));
-            gmail.SendKeys(kh.Gmail);
-            Thread.Sleep(1000);
-
-            IWebElement btn = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("input[value='REGISTER NOW']")));
-            btn.Submit();
-            Thread.Sleep(5000);
-
-            var isHome = driver.Url;
-
-            if (isHome.Contains("https://localhost:44324/Home/RegisterPage"))
+            IWebElement loginButton = null;
+            try
             {
-                Assert.Fail();
+                loginButton = driver.FindElement(By.Name("loginbtn"));
+                loginButton.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút chuyển đăng nhập!");
+            }
+
+            IWebElement logupButton = null;
+            try
+            {
+                logupButton = driver.FindElement(By.XPath("/html[1]/body[1]/div[2]/header[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[4]/a[1]"));
+                logupButton.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút chuyển đăng ký!");
+            }
+
+            IWebElement name = null;
+            try
+            {
+                name = driver.FindElement(By.Name("Username"));
+                name.SendKeys(kh.Username);
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy trường tên!");
+            }
+
+            IWebElement pass = null;
+            try
+            {
+                pass = driver.FindElement(By.Name("Password"));
+                pass.SendKeys(kh.Password);
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy trường mật khẩu!");
+            }
+
+            IWebElement mail = null;
+            try
+            {
+                mail = driver.FindElement(By.Name("Email"));
+                mail.SendKeys(kh.Gmail);
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy trường mail!");
+            }
+
+            IWebElement btn = null;
+            try
+            {
+                btn = driver.FindElement(By.XPath("/html[1]/body[1]/div[2]/header[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[4]/div[1]/input[1]"));
+                btn.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút đăng ký!");
+            }
+
+            Thread.Sleep(1000);
+
+            if (!driver.Url.Contains("https://localhost:44324/Home/RegisterPage"))
+            {
+                QuitWeb(driver);
+                driver.Navigate().GoToUrl("https://localhost:44324/Home/LoginPage");
+
+                IWebElement name2 = null;
+                try
+                {
+                    name2 = driver.FindElement(By.Name("Username"));
+                    name2.SendKeys(kh.Username);
+                }
+                catch
+                {
+                    QuitWeb(driver);
+                    Assert.Fail("Không tìm thấy trường tên!");
+                }
+
+                IWebElement pass2 = null;
+                try
+                {
+                    pass2 = driver.FindElement(By.Name("Password"));
+                    pass2.SendKeys(kh.Password);
+                }
+                catch
+                {
+                    QuitWeb(driver);
+                    Assert.Fail("Không tìm thấy trường mật khẩu!");
+                }
+
+                IWebElement btn2 = null;
+                try
+                {
+                    btn2 = driver.FindElement(By.Name("status"));
+                    btn2.Click();
+                }
+                catch
+                {
+                    QuitWeb(driver);
+                    Assert.Fail("Không tìm thấy nút đăng nhập!");
+                }
+                Thread.Sleep(1000);
+
+                if (!driver.Url.Contains("https://localhost:44324/Home/LoginPage"))
+                {
+                    QuitWeb(driver);
+                    Assert.Pass();
+                }
+                else
+                {
+                    QuitWeb(driver);
+                    Assert.Fail("Đăng ký thành công nhưng đăng nhập thất bại!");
+                }
+
             }
             else
             {
-                var exit = driver.FindElement(By.XPath("//a[@href='/Home/Logout']//*[name()='svg']"));
-                exit.Click();
-                Thread.Sleep(1000);
-
-                Assert.Pass();
+                QuitWeb(driver);
+                Assert.Fail("Đăng ký thất bại!");
             }
-        }
-
-
-        [OneTimeTearDown]
-        public void Quit()
-        {
-            driver.Quit();
         }
     }
 }
