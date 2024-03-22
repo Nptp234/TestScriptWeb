@@ -13,74 +13,86 @@ using TestScriptWeb.Data;
 
 namespace TestScriptWeb
 {
-    class DNNVTest
+    class DNNVTest : ASetUp
     {
-        private IWebDriver driver;
-        private WebDriverWait wait;
-        private List<User> lsKH;
-        private string url = "https://localhost:44324/";
-
-        //private static object[] DataLoginKH;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            lsKH = new List<User>();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            //DataLoginKH = TestLoginData.GetDataLoginKH(worksheet);
-        }
-
         [Test]
         [TestCaseSource(typeof(TestLoginNVData), nameof(TestLoginNVData.dataNV))]
         public void TestLogin(User nv)
         {
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(3000);
 
-            IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("loginbtn")));
-            loginButton.Click();
-            Thread.Sleep(2000);
-
-            IWebElement nvLink = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("a[href='/Home/LoginPageNV']")));
-            nvLink.Click();
-            Thread.Sleep(2000);
-
-            IWebElement name = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("Username")));
-            name.SendKeys(nv.Username);
-            Thread.Sleep(1000);
-
-            IWebElement pass = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("Password")));
-            pass.SendKeys(nv.Password);
-            Thread.Sleep(1000);
-
-            IWebElement btn = wait.Until(ExpectedConditions.ElementToBeClickable(By.Name("status")));
-            btn.Submit();
-            Thread.Sleep(5000);
-
-            var isHome = driver.Url;
-
-            if (isHome.Contains("https://localhost:44324/Home/LoginPageNV"))
+            IWebElement loginButton = null;
+            try
             {
-                Assert.Fail();
+                loginButton = driver.FindElement(By.Name("loginbtn"));
+                loginButton.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút chuyển đăng nhập!");
+            }
+
+            IWebElement loginNVButton = null;
+            try
+            {
+                loginNVButton = driver.FindElement(By.XPath("/html[1]/body[1]/div[2]/header[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[5]/a[1]"));
+                loginNVButton.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút chuyển đăng nhập NV!");
+            }
+
+            IWebElement name = null;
+            try
+            {
+                name = driver.FindElement(By.Name("Username"));
+                name.SendKeys(nv.Username);
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy trường tên!");
+            }
+
+            IWebElement pass = null;
+            try
+            {
+                pass = driver.FindElement(By.Name("Password"));
+                pass.SendKeys(nv.Password);
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy trường mật khẩu!");
+            }
+
+            IWebElement btn = null;
+            try
+            {
+                btn = driver.FindElement(By.Name("status"));
+                btn.Click();
+            }
+            catch
+            {
+                QuitWeb(driver);
+                Assert.Fail("Không tìm thấy nút đăng nhập!");
+            }
+
+            Thread.Sleep(1000);
+
+            if (!driver.Url.Contains("https://localhost:44324/Home/LoginPageNV"))
+            {
+                QuitWeb(driver);
+                Assert.Pass();
             }
             else
             {
-                var exit = driver.FindElement(By.XPath("//a[normalize-space()='Thoát']"));
-                exit.Click();
-                Thread.Sleep(1000);
-
-                Assert.Pass();
+                QuitWeb(driver);
+                Assert.Fail("Đăng nhập thất bại!");
             }
-        }
-
-
-        [OneTimeTearDown]
-        public void Quit()
-        {
-            driver.Quit();
         }
     }
 }
