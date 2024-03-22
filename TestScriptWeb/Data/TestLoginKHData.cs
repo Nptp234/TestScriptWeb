@@ -30,7 +30,7 @@ namespace TestScriptWeb.Data
             int rowCount = worksheet.Dimension.Rows;
             User[] lsKH = new User[rowCount];
 
-            for (int i = 1; i <= rowCount; i++)
+            for (int i = 2; i <= rowCount; i++)
             {
                 var cell1 = worksheet.Cells[i, 1].Value;
                 var cell2 = worksheet.Cells[i, 2].Value;
