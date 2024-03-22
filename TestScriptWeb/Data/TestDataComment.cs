@@ -8,7 +8,7 @@ namespace TestScriptWeb.Data
 {
     class TestDataComment
     {
-        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\ExcelFỏUnitTesting\\bldatafile.xlsx");
+        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\TestScriptWeb\\TestScriptWeb\\Data\\DataExcel\\bldatafile.xlsx");
         static ExcelPackage packageExcel = new ExcelPackage(excelFile);
         static ExcelWorksheet worksheet = packageExcel.Workbook.Worksheets[0];
 

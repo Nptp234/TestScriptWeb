@@ -9,7 +9,7 @@ namespace TestScriptWeb.Data
 {
     public static class TestFilmData
     {
-        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\ExcelFỏUnitTesting\\FilmData.xlsx");
+        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\TestScriptWeb\\TestScriptWeb\\Data\\DataExcel\\FilmData.xlsx");
         static ExcelPackage packageExcel = new ExcelPackage(excelFile);
         static ExcelWorksheet worksheet = packageExcel.Workbook.Worksheets[0];
         static List<string> Result { get; set; }

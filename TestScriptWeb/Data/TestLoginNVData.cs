@@ -11,7 +11,7 @@ namespace TestScriptWeb.Data
     [Parallelizable]
     public static class TestLoginNVData
     {
-        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\ExcelFỏUnitTesting\\LoginNV.xlsx");
+        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\TestScriptWeb\\TestScriptWeb\\Data\\DataExcel\\LoginNV.xlsx");
         static ExcelPackage packageExcel = new ExcelPackage(excelFile);
         static ExcelWorksheet worksheet = packageExcel.Workbook.Worksheets[0];
 
