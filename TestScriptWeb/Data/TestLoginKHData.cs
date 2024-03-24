@@ -18,7 +18,11 @@ namespace TestScriptWeb.Data
     [Parallelizable]
     public static class TestLoginKHData
     {
-        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\TestScriptWeb\\TestScriptWeb\\Data\\DataExcel\\LoginKH.xlsx");
+        // Đường dẫn tới thư mục chứa tệp Excel trong dự án
+        static string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+        static string excelFilePath = Path.Combine(projectDirectory, "Data", "DataExcel", "LoginKH.xlsx");
+
+        static FileInfo excelFile = new FileInfo(excelFilePath);
         static ExcelPackage packageExcel = new ExcelPackage(excelFile);
         static ExcelWorksheet worksheet = packageExcel.Workbook.Worksheets[0];
 

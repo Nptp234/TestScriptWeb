@@ -9,7 +9,7 @@ using TestScriptWeb.Data;
 
 namespace TestScriptWeb.CommentFilm
 {
-    class KiemThuBLDN :ASetUp
+    class KiemThuBLDN : ASetUp
     {
         [Test]
         [TestCaseSource(typeof(TestDataComment), nameof(TestDataComment.dataBL))]
@@ -55,7 +55,7 @@ namespace TestScriptWeb.CommentFilm
                 var cmt = driver.FindElement(By.Name("GhiChu"));
                 cmt.SendKeys(binhluan);
 
-                var postcmt = driver.FindElement(By.XPath("/html[1]/body[1]/section[1]/div[1]/div[1]/form[1]/div[1]/div[2]/button[1]"));
+                var postcmt = driver.FindElement(By.XPath("/html[1]/body[1]/section[1]/div[1]/div[1]/div[1]/div[1]/div[2]/button[1]"));
                 postcmt.Click();
 
                 Thread.Sleep(2000);
@@ -71,8 +71,7 @@ namespace TestScriptWeb.CommentFilm
                 {
                     driver.Navigate().GoToUrl(url);
 
-                    var exit = driver.FindElement(By.XPath("//a[@href='/Home/Logout']//*[name()='svg']"));
-                    exit.Click();
+                    QuitWeb(driver);
 
                     Thread.Sleep(2000);
 

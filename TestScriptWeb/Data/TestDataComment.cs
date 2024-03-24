@@ -8,7 +8,11 @@ namespace TestScriptWeb.Data
 {
     class TestDataComment
     {
-        static FileInfo excelFile = new FileInfo("D:\\1 BDCLPM\\TestScriptWeb\\TestScriptWeb\\Data\\DataExcel\\bldatafile.xlsx");
+        // Đường dẫn tới thư mục chứa tệp Excel trong dự án
+        static string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+        static string excelFilePath = Path.Combine(projectDirectory, "Data", "DataExcel", "bldatafile.xlsx");
+
+        static FileInfo excelFile = new FileInfo(excelFilePath);
         static ExcelPackage packageExcel = new ExcelPackage(excelFile);
         static ExcelWorksheet worksheet = packageExcel.Workbook.Worksheets[0];
 
