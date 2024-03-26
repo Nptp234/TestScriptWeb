@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TestScriptWeb.Data
 {
-    class TestDataComment
+    public class TestDataComment
     {
         // Đường dẫn tới thư mục chứa tệp Excel trong dự án
         static string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
@@ -43,6 +43,13 @@ namespace TestScriptWeb.Data
             }
 
             return lsBL;
+        }
+
+        public static void WriteEXBL(string values, int rowIndex)
+        {
+            worksheet.Cells[rowIndex, 2].Value = values;
+
+            packageExcel.Save();
         }
     }
 }

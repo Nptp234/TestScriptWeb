@@ -54,13 +54,18 @@ namespace TestScriptWeb.Data
             return lsKH;
         }
 
-        public static void WriteResultToEX(List<string> _result)
+        public static void WriteEXPhim(string values, int rowIndex)
         {
-            for (int i = 2; i < _result.Count; i++)
-            {
-                var cell13 = worksheet.Cells[13, i];
-                cell13.Value = _result[i-2];
-            }
+            worksheet.Cells[rowIndex, 11].Value = values;
+
+            packageExcel.Save();
+        }
+
+        public static void WriteEXPhimUpdate(string values, int rowIndex)
+        {
+            worksheet.Cells[rowIndex, 12].Value = values;
+
+            packageExcel.Save();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TestScriptWeb.BookingTicket
     class DatVeChonGioChieuDaQua : ASetUp
     {
         [Test]
-        public void KiemThuDatVeChonQuaNhieuGhe()
+        public void KiemThuDatVeChonGioChieuDaQua()
         {
             driver.Navigate().GoToUrl(url);
 

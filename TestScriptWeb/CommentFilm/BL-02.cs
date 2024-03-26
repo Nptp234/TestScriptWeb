@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using TestScriptWeb.Data;
 
 namespace TestScriptWeb.CommentFilm
 {
@@ -49,8 +50,14 @@ namespace TestScriptWeb.CommentFilm
                     isRead = cmtBtn.GetAttribute("readonly");
                     isDis = cmtBtn.GetAttribute("disabled");
 
-                    if (isRead != null || isDis != null) { Assert.Pass(); }
-                    else Assert.Fail("Bình luận không bị tắt!");
+                    if (isRead != null || isDis != null) 
+                    {
+                        Assert.Pass(); 
+                    }
+                    else
+                    {
+                        Assert.Fail("Bình luận không bị tắt!");
+                    }
                 }
             }
         }

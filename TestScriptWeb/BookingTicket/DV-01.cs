@@ -12,6 +12,7 @@ namespace TestScriptWeb.BookingTicket
         [Test]
         public void DatVeChuaDN()
         {
+            QuitWeb(driver);
             driver.Navigate().GoToUrl(url);
 
             if (driver.Url.Contains(url))
@@ -45,7 +46,7 @@ namespace TestScriptWeb.BookingTicket
                 Thread.Sleep(1000);
 
                 driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/div[2]/a[1]")).Click();
-                Thread.Sleep(1000);
+                Thread.Sleep(1500);
 
                 if (driver.Url.Contains("https://localhost:44324/Home/LoginPage"))
                 {

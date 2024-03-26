@@ -12,12 +12,13 @@ namespace TestScriptWeb.FilmManagement
     [TestFixture]
     class AddFilmTest : AFilm
     {
-        public static List<string> result = new List<string>();
+        int rowIndex = 1;
 
         [Test]
         [TestCaseSource(typeof(TestFilmData), nameof(TestFilmData.dataPhim))]
         public void AddFilmTest2(Phim phim)
         {
+            rowIndex++;
             //Đăng nhập nhân viên
             DNNV(driver);
             Thread.Sleep(1000);
@@ -65,6 +66,7 @@ namespace TestScriptWeb.FilmManagement
             }
             catch
             {
+                TestFilmData.WriteEXPhim("Không tìm thấy phần tử ảnh!", rowIndex);
                 Assert.Fail("Không tìm thấy phần tử ảnh!");
             }
 
@@ -76,7 +78,8 @@ namespace TestScriptWeb.FilmManagement
             else
             {
                 driver.Navigate().GoToUrl("https://localhost:44324/Home/Logout");
-                result.Add("Fail");
+
+                TestFilmData.WriteEXPhim("Thêm thất bại!", rowIndex);
                 Assert.Fail("Thêm thất bại!");
             }
 
@@ -123,19 +126,20 @@ namespace TestScriptWeb.FilmManagement
                 if (ls2.Count > ls1.Count && ls1 != null && ls2 != null)
                 {
                     QuitWeb(driver);
-                    result.Add("Pass");
+                    TestFilmData.WriteEXPhim("Thêm thành công!", rowIndex);
                     Assert.Pass("Thêm thành công!");
                 }
                 else
                 {
                     QuitWeb(driver);
-                    result.Add("Fail");
+                    TestFilmData.WriteEXPhim("Thêm thất bại!", rowIndex);
                     Assert.Fail("Thêm thất bại!");
                 }
             }
             else
             {
                 QuitWeb(driver);
+                TestFilmData.WriteEXPhim("Not in film management!", rowIndex);
                 Assert.Fail("Not in film management!");
             }
 

@@ -84,6 +84,7 @@ namespace TestScriptWeb.BookingTicket
                             Assert.Fail("Không tìm thấy ca chiếu!");
                         }
                     }
+                    Thread.Sleep(1000);
 
                     //Lấy danh sách ca chiếu của suất chiếu đã lấy và bấm vào
                     var ls = dsCaChieu.FindElements(By.TagName("a"));
@@ -93,6 +94,7 @@ namespace TestScriptWeb.BookingTicket
                         Thread.Sleep(1000);
                         break;
                     }
+                    Thread.Sleep(1000);
 
                     //Chọn ghế
                     List<IWebElement> gheTheoHang = null;

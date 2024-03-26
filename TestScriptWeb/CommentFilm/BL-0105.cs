@@ -11,10 +11,13 @@ namespace TestScriptWeb.CommentFilm
 {
     class KiemThuBLDN : ASetUp
     {
+        int rowIndex = 1;
+
         [Test]
         [TestCaseSource(typeof(TestDataComment), nameof(TestDataComment.dataBL))]
         public void KiemThuBLDaDN(string binhluan)
         {
+            rowIndex++;
             driver.Navigate().GoToUrl(url);
 
             if (driver.Url.Contains("https://localhost:44324/"))
@@ -75,10 +78,12 @@ namespace TestScriptWeb.CommentFilm
 
                     Thread.Sleep(2000);
 
+                    TestDataComment.WriteEXBL("Pass", rowIndex);
                     Assert.Pass();
                 }
                 else
                 {
+                    TestDataComment.WriteEXBL("cmt khong thanh cong", rowIndex);
                     Assert.Fail("cmt khong thanh cong");
                 }
             }

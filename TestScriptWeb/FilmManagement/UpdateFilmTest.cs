@@ -13,11 +13,13 @@ namespace TestScriptWeb.FilmManagement
     class UpdateFilmTest : AFilm
     {
         private static IWebElement nameFilm, detailFilm, dateFilm, timesFilm, imgFilm, trailerFilm, pricesFilm, idAgeFilm;
+        int rowIndex = 1;
 
         [Test]
         [TestCaseSource(typeof(TestFilmData), nameof(TestFilmData.dataPhim))]
         public void TestUpdate(Phim phim)
         {
+            rowIndex++;
             DNNV(driver);
             Thread.Sleep(1000);
 
@@ -74,7 +76,8 @@ namespace TestScriptWeb.FilmManagement
                 else
                 {
                     driver.Navigate().GoToUrl("https://localhost:44324/Home/Logout");
-                    Assert.Fail("Thêm thất bại!");
+                    TestFilmData.WriteEXPhimUpdate("Thêm hình ảnh thất bại!", rowIndex);
+                    Assert.Fail("Thêm hình ảnh thất bại!");
                 }
 
                 //Trailer
@@ -157,11 +160,13 @@ namespace TestScriptWeb.FilmManagement
                     if (isCheck)
                     {
                         QuitWeb(driver);
+                        TestFilmData.WriteEXPhimUpdate("Pass", rowIndex);
                         Assert.Pass();
                     }
                     else
                     {
                         QuitWeb(driver);
+                        TestFilmData.WriteEXPhimUpdate("Cập nhật không thành công", rowIndex);
                         Assert.Fail("Cập nhật không thành công");
                     }
 
@@ -169,6 +174,7 @@ namespace TestScriptWeb.FilmManagement
                 else
                 {
                     QuitWeb(driver);
+                    TestFilmData.WriteEXPhimUpdate("Không còn ở trang phim!", rowIndex);
                     Assert.Fail("Không còn ở trang phim!");
                 }
                 // Kết thúc kiểm tra trang web phim 
@@ -177,6 +183,7 @@ namespace TestScriptWeb.FilmManagement
             else
             {
                 QuitWeb(driver);
+                TestFilmData.WriteEXPhimUpdate("Fail", rowIndex);
                 Assert.Fail();
             }
             // Kết thúc kiểm tra mở trang quản lý phim
